@@ -1,26 +1,73 @@
-import { Button } from "@/components/ui/button";
+import { CSSProperties, useState } from "react";
+import { CardWithForm } from "@/components/CardWithForm";
+import { emailValidator, passwordValidator } from "@/utils/Utils";
+import { useNavigate } from "react-router-dom";
 
-export const login = () => {
-  return (
-    <div style={themedStyle.container}>
-      <div style={themedStyle.textColor}>Hello World</div>
-      <Button>Login</Button>
-    </div>
-  );
+interface AuthenticateUser {
+  email: string;
+  password: string;
 }
 
+export const Login = () => {
+  const navigate = useNavigate(); // Use React Router's useNavigate hook
+  const [loginError, setLoginError] = useState<string | null>(null);
 
-const themedStyle = {
+  const handleLogin = (email: string, password: string) => {
+    const authenticateUser: AuthenticateUser = { email, password };
+    setLoginError(null);
+
+    const emailValidation = emailValidator(authenticateUser.email);
+    const passwordValidation = passwordValidator(authenticateUser.password);
+
+    if (emailValidation || passwordValidation) {
+      return {
+        emailError: emailValidation || "",
+        passwordError: passwordValidation || "",
+      };
+    }
+
+    const hardCodedUser: AuthenticateUser = {
+      email: "johndoe@gmail.com",
+      password: "Password123!",
+    };
+
+    if (
+      authenticateUser.email === hardCodedUser.email &&
+      authenticateUser.password === hardCodedUser.password
+    ) {
+      navigate("/dashboard"); // Navigate to /dashboard using React Router
+      console.log("Params: ", authenticateUser);
+      console.log("LOGGED IN SUCCESSFULLY!");
+    } else {
+      setLoginError("Invalid email or password");
+      console.log("Params: ", authenticateUser);
+      return {
+        emailError: "Invalid email or password",
+        passwordError: "Invalid email or password",
+      };
+    }
+
+    return { emailError: "", passwordError: "" };
+  };
+
+  return (
+    <div style={themedStyle.container}>
+      <CardWithForm onLogin={handleLogin} loginError={loginError} />
+    </div>
+  );
+};
+
+const themedStyle: { container: CSSProperties; textColor: CSSProperties } = {
   container: {
-    display: "flex", // Add flex display
-    flexDirection: "column", // Stack items vertically
-    width: "80%", // Added a margin for the container
-    justifyContent: "center", // Center horizontally
-    alignItems: "center", // Center vertically
-    minHeight: "100vh", // Optional: full viewport height to see vertical centering
-    margin: 'auto', // center the container
+    display: "flex",
+    flexDirection: "column",
+    width: "80vw",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: "100vh",
+    margin: "auto",
   },
   textColor: {
-    color: "Black",
+    color: "black",
   },
 };

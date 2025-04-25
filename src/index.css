@@ -1,10 +1,9 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-
-@custom-variant dark (&:is(.dark *));
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: system-ui, AvePonir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -181,6 +180,12 @@ button:focus-visible {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    margin: 0; /* Remove default margin */
+    min-height: 100vh; /* Ensure body takes full viewport height */
+    display: flex; /* Make body a flex container */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+   @apply bg-background text-foreground;
+
   }
 }
