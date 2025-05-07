@@ -1,31 +1,17 @@
 import { StrictMode } from "react";
-import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Dashboard } from "./pages/dashboard";
+import { Login } from "./pages/login";
 import "./index.css";
 
-// Import your page components
-import { Login } from "@/pages/login";
-import { Dashboard } from "@/pages/dashboard";
-
-// Define the routes
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Login />,
-  },
-  {
-    path: "/dashboard",
-    element: <Dashboard />,
-  },
-]);
-
-// Render the app
-const rootElement = document.getElementById("root")!;
-if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement);
-  root.render(
-    <StrictMode>
-      <RouterProvider router={router} />
-    </StrictMode>
-  );
-}
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </BrowserRouter>
+  </StrictMode>
+);

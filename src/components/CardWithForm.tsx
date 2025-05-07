@@ -15,40 +15,33 @@ interface CardWithFormProps {
   onLogin: (
     email: string,
     password: string
-  ) => void | { emailError: string; passwordError: string } | null;
-  loginError?: string | null;
+  ) => Promise<{ authError: string } | null>;
 }
 
-export const CardWithForm = ({ onLogin, loginError }: CardWithFormProps) => {
+export const CardWithForm = ({ onLogin }: CardWithFormProps) => {
   const [email, setEmail] = useState({
-    value: "johndoe@gmail.com",
+    value: "kelvin@gmail.com",
     error: "",
   });
   const [password, setPassword] = useState({
     value: "Password123!",
     error: "",
   });
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [authError, setAuthError] = useState("");
   const [showAlert, setShowAlert] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Clear previous errors
-    setEmailError("");
-    setPasswordError("");
+    setAuthError("");
     setShowAlert(false);
 
     // Call parent login handler with separate email/password
-    const errors = onLogin(email.value, password.value);
+    const errors = await onLogin(email.value, password.value);
 
     if (errors) {
-      setEmailError(errors.emailError || "");
-      setPasswordError(errors.passwordError || "");
-    }
-
-    if (loginError) {
+      setAuthError(errors.authError || "");
       setShowAlert(true);
     }
   };
@@ -72,9 +65,6 @@ export const CardWithForm = ({ onLogin, loginError }: CardWithFormProps) => {
                 value={email.value}
                 onChange={(e) => setEmail({ ...email, value: e.target.value })}
               />
-              {emailError && (
-                <span className="text-red-500 text-sm">{emailError}</span>
-              )}
             </div>
             <div className="flex flex-col space-y-1.5 mb-[10px] gap-[10px]">
               <Label htmlFor="password">Password</Label>
@@ -85,11 +75,10 @@ export const CardWithForm = ({ onLogin, loginError }: CardWithFormProps) => {
                 className="p-[10px] w-full"
                 style={cardStyle.inputTextColor}
                 value={password.value}
-                onChange={(e) => setPassword({ ...password, value: e.target.value })}
+                onChange={(e) =>
+                  setPassword({ ...password, value: e.target.value })
+                }
               />
-              {passwordError && (
-                <span className="text-red-500 text-sm">{passwordError}</span>
-              )}
             </div>
           </div>
           <CardFooter className="justify-center content-center p-0">
@@ -102,7 +91,7 @@ export const CardWithForm = ({ onLogin, loginError }: CardWithFormProps) => {
         <div className="absolute bottom-[-100px] left-0 right-0 mx-auto w-full">
           <AlertDemo
             onClose={() => setShowAlert(false)}
-            message={loginError || ""}
+            message={authError || ""}
           />
         </div>
       )}
