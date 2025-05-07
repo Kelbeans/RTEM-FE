@@ -1,4 +1,4 @@
-import { AuthenticateResponse } from "@/types/type-definition/api/reponse-types";
+import { AuthenticateResponse } from "@/types/api/reponse-types";
 
 
 export interface UserSession {

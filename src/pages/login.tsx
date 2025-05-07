@@ -1,8 +1,8 @@
 import { CSSProperties } from "react";
 import { CardWithForm } from "@/components/CardWithForm";
 import { useNavigate } from "react-router-dom";
-import { authenticateUser } from "@/api/AuthenticationController";
-import { Strings } from "@/types/type-definition/models";
+import { authenticateUser } from "@/api/auth-controller";
+import { Strings } from "@/types/models";
 
 export const Login = () => {
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import { BASE_API } from "@/utils/backend-url";
 import { AxiosResponse } from "axios";
-import { AuthenticatePayload, AuthenticateResponse, APIResponse } from "@/types/type-definition/api";
+import { AuthenticatePayload, AuthenticateResponse, APIResponse } from "@/types/api";
 import apiManager from "./api-manager";
 
 export const authenticateUser = async (
